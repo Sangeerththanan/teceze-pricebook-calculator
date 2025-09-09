@@ -1,0 +1,29 @@
+{
+  "name": "teceze-pricebook-calculator",
+  "version": "1.0.0",
+  "description": "A web application for calculating IT support service pricing across different regions and countries",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd backend && node index.js",
+    "frontend": "cd frontend && npm run dev",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd frontend && npm run build",
+    "test": "node test-app.js",
+    "start-backend": "cd backend && node index.js",
+    "start-frontend": "cd frontend && npm run dev"
+  },
+  "keywords": [
+    "pricebook",
+    "calculator",
+    "it-support",
+    "pricing",
+    "teceze"
+  ],
+  "author": "TECEZE Development Team",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "axios": "^1.5.0"
+  }
+}
