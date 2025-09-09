@@ -5,6 +5,16 @@ const path = require('path');
 
 const app = express();
 app.use(cors());
+// Explicit CORS headers and preflight handling for serverless
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+  next();
+});
 app.use(express.json());
 
 // Load JSON data (use absolute path for serverless compatibility)
