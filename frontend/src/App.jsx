@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
+// API base URL configurable via Vite env var
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+
 function App() {
   const [regions, setRegions] = useState([]);
   const [countries, setCountries] = useState([]);
@@ -17,7 +20,7 @@ function App() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3001/countries')
+    axios.get(`${API_BASE_URL}/countries`)
       .then(res => {
       const regionList = [...new Set(res.data.map(c => c.region))];
         setRegions(regionList);
@@ -37,7 +40,7 @@ function App() {
     setError('');
     
     if (region) {
-      axios.get(`http://localhost:3001/countries?region=${region}`)
+      axios.get(`${API_BASE_URL}/countries?region=${region}`)
         .then(res => setCountries(res.data.map(c => c.country)))
         .catch(err => {
           console.error('Error fetching countries:', err);
@@ -55,7 +58,7 @@ function App() {
     setLoading(true);
     setError('');
     
-    let url = `http://localhost:3001/prices/${selectedCountry}/${selectedService}`;
+    let url = `${API_BASE_URL}/prices/${selectedCountry}/${selectedService}`;
     
     if (selectedService === 'yearly' && selectedLevel && selectedBackfill) {
       url += `/${selectedLevel}/${selectedBackfill}`;
