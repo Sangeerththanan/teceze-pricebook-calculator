@@ -1,13 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
+const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Load JSON data
-const data = JSON.parse(fs.readFileSync('./data.json', 'utf8'));
+// Load JSON data (use absolute path for serverless compatibility)
+const dataFilePath = path.join(__dirname, 'data.json');
+const data = JSON.parse(fs.readFileSync(dataFilePath, 'utf8'));
 
 // Static terms and descriptions
 const terms = [
@@ -127,8 +129,13 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', countries: data.countries.length });
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Backend running on port ${PORT}`);
-  console.log(`Loaded ${data.countries.length} countries`);
-});
+// Start server only when running locally (not in Vercel serverless)
+if (require.main === module) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`Backend running on port ${PORT}`);
+    console.log(`Loaded ${data.countries.length} countries`);
+  });
+}
+
+module.exports = app;
